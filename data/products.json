@@ -25,11 +25,11 @@
     "titulo": "Windbreak Champion",
     "categoria": "Abrigos",
     "subcategoria": "Rompeviento",
-    "talle": "XL AMPLIO",
+    "talle": "XL",
     "largo": 77.0,
     "ancho": 71.0,
     "estado": "9,5 / 10",
-    "detalles": "Manchitas en manga izquierda poco notables (consultar por mensaje en caso de tener dudas).",
+    "detalles": "Talle XL Amplio\nManchitas en manga izquierda poco notables (consultar por mensaje en caso de tener dudas).",
     "disponible": true,
     "precio": 45000.0,
     "imagenes": [
@@ -50,7 +50,7 @@
     "talle": "XL",
     "largo": null,
     "ancho": null,
-    "estado": "10/10/2026",
+    "estado": "10 / 10",
     "detalles": "Sin detalles",
     "disponible": true,
     "precio": 45000.0,
@@ -62,5 +62,88 @@
     ],
     "imagen": "https://i.ibb.co/Y4HCFmbs/IMG-8896.png",
     "descripcion": ""
+  },
+  {
+    "id": "4.0",
+    "titulo": "Campera Nike",
+    "categoria": "Abrigos",
+    "subcategoria": "Campera",
+    "talle": "M",
+    "largo": 64.0,
+    "ancho": 56.0,
+    "estado": "10 / 10",
+    "detalles": "Sin detalles",
+    "disponible": true,
+    "precio": 39000.0,
+    "imagenes": [
+      "https://i.ibb.co/jkH5csqK/IMG-9334.jpg",
+      "https://i.ibb.co/6QkyWHh/IMG-9335.jpg",
+      "https://i.ibb.co/SwJHyrr6/IMG-9336.jpg",
+      "https://i.ibb.co/KxC95GSt/IMG-9337.jpg"
+    ],
+    "imagen": "https://i.ibb.co/jkH5csqK/IMG-9334.jpg",
+    "descripcion": ""
+  },
+  {
+    "id": "5.0",
+    "titulo": "Chomba Starter",
+    "categoria": "Remeras",
+    "subcategoria": "Chomba",
+    "talle": "XL",
+    "largo": 74.0,
+    "ancho": 65.0,
+    "estado": "10 / 10",
+    "detalles": "Sin detalles",
+    "disponible": true,
+    "precio": 40000.0,
+    "imagenes": [
+      "https://i.ibb.co/dsVq2zC9/IMG-9277.jpg",
+      "https://i.ibb.co/PGgXq6Kb/IMG-9281.jpg",
+      "https://i.ibb.co/GvK3rhzt/IMG-9284.jpg",
+      "https://i.ibb.co/5WCP9Q73/IMG-9286.jpg"
+    ],
+    "imagen": "https://i.ibb.co/dsVq2zC9/IMG-9277.jpg",
+    "descripcion": "Chomba de manga larga / jersey liviano original de los Detroit Red Wings (NHL), fabricada por Starter a mediados/fines de los años 90.\n\nEra / Datación: Años 90 (circa 1995–1999). Corresponde a la línea Center Ice Authentic, la colección oficial con licencia de la NHL de la época previa al cambio de milenio.\n\nEtiqueta: Tag blanco tejido rectangular con el escudo vintage de la NHL en naranja y negro, junto con la tipografía en bloque clásica de Starter y subetiqueta de talle (Made in Pakistan).\n\nDetalles de confección:\nEscudo clásico de los Red Wings bordado al frente.\nLogo de la estrella de Starter bordado en la nuca y en el puño de la manga izquierda.\nTirador de cierre original de goma vulcanizada con relieve de la marca.\nCuello tipo polo rígido en tela de sarga y cuerpo en tejido piqué/panal de abeja grueso con bloques de color en hombros y mangas.\n\nEstado: Muy buen estado vintage, con poco desgaste y desvanecimiento parejo propio del paso del tiempo y las telas de algodón/poliéster de esa década."
+  },
+  {
+    "id": "6.0",
+    "titulo": "Remera Celtics",
+    "categoria": "Remeras",
+    "subcategoria": "Remera",
+    "talle": "M / L",
+    "largo": 72.0,
+    "ancho": 53.0,
+    "estado": "10 /10",
+    "detalles": "Talle L (Size de ancho M)",
+    "disponible": true,
+    "precio": 28000.0,
+    "imagenes": [
+      "https://i.ibb.co/LzrPDjQw/IMG-9690.jpg",
+      "https://i.ibb.co/d03sdwwB/IMG-9692.jpg",
+      "https://i.ibb.co/dwJhHLP2/IMG-9693.jpg",
+      "https://i.ibb.co/5XcvPNPB/IMG-9695.jpg"
+    ],
+    "imagen": "https://i.ibb.co/LzrPDjQw/IMG-9690.jpg",
+    "descripcion": "NBA Original Boston Celtics Old Logo"
+  },
+  {
+    "id": "7.0",
+    "titulo": "Remera Sixers",
+    "categoria": "Remeras",
+    "subcategoria": "Remera",
+    "talle": "XL / XXL",
+    "largo": 71.0,
+    "ancho": 60.0,
+    "estado": "10 / 10",
+    "detalles": "Talle XXL (Size XL)",
+    "disponible": true,
+    "precio": 29000.0,
+    "imagenes": [
+      "https://i.ibb.co/0phSJzcS/IMG-9844.jpg",
+      "https://i.ibb.co/k2d4BJXy/IMG-9845.jpg",
+      "https://i.ibb.co/1YtzKNrh/IMG-9846.jpg"
+    ],
+    "imagen": "https://i.ibb.co/0phSJzcS/IMG-9844.jpg",
+    "descripcion": "Remera gráfica de los Philadelphia 76ers (NBA) fabricada por Mitchell & Ness bajo su línea de reedición histórica Nostalgia Co.\n\nDiseño / Gráfica: Estampado frontal con el logo retro de los 76ers utilizado originalmente entre 1977 y 1997, acompañado por la tipografía del equipo en bloque.\n\nEtiqueta / Fabricación: Estampada al cuello (tagless) de Mitchell & Ness Nostalgia Co. 100% algodón premium, fabricada en Honduras."
   }
 ]
