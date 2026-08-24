@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>docta.vtg — archivo de ropa vintage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #0a0a0d;
+  --bg-raised: #121016;
+  --violet-deep: #2a1533;
+  --violet: #5b2e73;
+  --violet-bright: #8b4fae;
+  --line: #29202f;
+  --text: #ede8ef;
+  --text-dim: #9c8fa8;
+
+  --font-display: "Anton", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+*{ box-sizing: border-box; margin:0; padding:0; }
+
+html{ scroll-behavior: smooth; }
+
+body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+}
+
+a{ color: inherit; text-decoration: none; }
+
+/* ---------- topbar ---------- */
+.topbar{
+  display:flex;
+  align-items:center;
+  gap: 1rem;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top:0;
+  background: rgba(10,10,13,0.92);
+  backdrop-filter: blur(6px);
+  z-index: 40;
+}
+
+.logo{
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+.logo__dot{ color: var(--violet-bright); }
+
+.topbar__tag{
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-left: auto;
+  display: none;
+}
+@media (min-width: 640px){
+  .topbar__tag{ display: inline; }
+}
+
+.filter-toggle{
+  width: 34px; height: 34px;
+  display:flex; flex-direction: column; justify-content:center; gap:5px;
+  align-items:center;
+  background: transparent;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  flex-shrink:0;
+}
+.filter-toggle__bar{
+  width: 16px; height: 1.5px;
+  background: var(--text);
+  transition: transform .2s ease, opacity .2s ease;
+}
+.filter-toggle[aria-expanded="true"] .filter-toggle__bar:nth-child(1){ transform: translateY(6.5px) rotate(45deg); }
+.filter-toggle[aria-expanded="true"] .filter-toggle__bar:nth-child(2){ opacity:0; }
+.filter-toggle[aria-expanded="true"] .filter-toggle__bar:nth-child(3){ transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ---------- layout ---------- */
+.layout{
+  display:flex;
+  align-items:flex-start;
+}
+
+.sidebar{
+  width: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  height: calc(100vh - 64px);
+  position: sticky;
+  top: 64px;
+  transition: width .25s ease;
+  background: var(--bg-raised);
+  flex-shrink: 0;
+  z-index: 30;
+}
+.sidebar.is-open{
+  width: 260px;
+}
+.sidebar__inner{
+  width: 260px;
+  padding: 1.6rem 1.4rem;
+}
+.sidebar__head{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom: 1.6rem;
+}
+.sidebar__head h2{
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  text-transform: lowercase;
+  letter-spacing: 0.03em;
+}
+.sidebar__close{
+  display:none;
+  background:none; border:none; color: var(--text); font-size: 1.4rem; cursor:pointer;
+}
+
+.filter-group{
+  border: none;
+  margin-bottom: 1.6rem;
+}
+.filter-group legend{
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet-bright);
+  margin-bottom: 0.7rem;
+}
+.check{
+  display:flex; align-items:center; gap: 0.6rem;
+  font-size: 0.82rem;
+  padding: 0.35rem 0;
+  cursor: pointer;
+  color: var(--text-dim);
+}
+.check:hover{ color: var(--text); }
+.check input{
+  appearance: none;
+  width: 13px; height: 13px;
+  border: 1px solid var(--text-dim);
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+}
+.check input:checked{
+  background: var(--violet-bright);
+  border-color: var(--violet-bright);
+}
+.check input:checked + span{ color: var(--text); }
+
+.clear-btn{
+  width:100%;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease;
+}
+.clear-btn:hover{ border-color: var(--violet-bright); color: var(--text); }
+
+.sidebar__count{
+  margin-top: 1.4rem;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.overlay{
+  display:none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 25;
+}
+.overlay.is-visible{ display:block; }
+
+/* ---------- grid ---------- */
+.grid{
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  min-width: 0;
+}
+
+.card{
+  background: var(--bg);
+  padding: 0;
+  display:flex; flex-direction:column;
+  cursor: pointer;
+}
+
+.card__frame{
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+.card__img{
+  width:100%; height:100%; object-fit: cover;
+  filter: grayscale(15%);
+  transition: transform .5s ease, filter .5s ease;
+}
+.card:hover .card__img{
+  transform: scale(1.04);
+  filter: grayscale(0%);
+}
+
+.card__talle{
+  position:absolute;
+  bottom: 0.6rem; left: 0.6rem;
+  background: var(--violet-deep);
+  border: 1px solid var(--violet-bright);
+  color: var(--text);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.18rem 0.5rem;
+  text-transform: uppercase;
+}
+
+.card__title{
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  text-transform: lowercase;
+  letter-spacing: 0.01em;
+  padding: 0.8rem 0.9rem 0.2rem;
+  line-height: 1.2;
+}
+
+.card__meta{
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0 0.9rem 1rem;
+}
+
+.grid__empty{
+  grid-column: 1 / -1;
+  padding: 4rem 1.5rem;
+  text-align:center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  background: var(--bg);
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 780px){
+  .sidebar{
+    position: fixed;
+    top:0; left:0;
+    height: 100vh;
+    z-index: 50;
+  }
+  .sidebar__inner{ padding-top: 1.2rem; }
+  .sidebar__close{ display:block; }
+}
+
+/* ---------- página de detalle ---------- */
+.back-link{
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color .2s ease;
+}
+.back-link:hover{ color: var(--text); }
+
+.product{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.product__gallery{ display:flex; flex-direction:column; gap: 0.7rem; }
+
+.product__main-frame{
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+}
+.product__main-img{
+  width:100%; height:100%; object-fit: cover;
+}
+
+.product__thumbs{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 0.5rem;
+}
+.product__thumb{
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0.55;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+.product__thumb img{ width:100%; height:100%; object-fit: cover; display:block; }
+.product__thumb:hover{ opacity: 0.85; }
+.product__thumb.is-active{
+  opacity: 1;
+  border-color: var(--violet-bright);
+}
+
+.product__info{ padding-top: 0.3rem; }
+
+.product__tag{
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--violet-bright);
+  margin-bottom: 0.6rem;
+}
+
+.product__title{
+  font-family: var(--font-display);
+  font-size: 2rem;
+  text-transform: lowercase;
+  line-height: 1.1;
+  margin-bottom: 0.9rem;
+}
+
+.product__price{
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1.6rem;
+}
+
+.product__specs{
+  border-top: 1px solid var(--line);
+  margin-bottom: 1.6rem;
+}
+.spec{
+  display:flex; justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.82rem;
+}
+.spec span:first-child{
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+.spec span:last-child{ text-transform: capitalize; }
+
+.product__desc{
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin-bottom: 1.2rem;
+}
+.product__details{
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.product__details strong{
+  color: var(--text);
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 780px){
+  .product{
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    padding: 1.6rem 1.2rem 3rem;
+  }
+}
+
+/* ---------- modal de detalle (index) ---------- */
+body.modal-open{ overflow: hidden; }
+
+.modal-overlay{
+  display:none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.78);
+  z-index: 60;
+  padding: 3rem 1rem;
+  overflow-y: auto;
+}
+.modal-overlay.is-visible{ display:block; }
+
+.modal{
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+.modal .product{
+  padding: 3rem 2.5rem;
+}
+
+.modal__close{
+  position: absolute;
+  top: 1rem; right: 1rem;
+  width: 34px; height: 34px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  transition: border-color .2s ease;
+}
+.modal__close:hover{ border-color: var(--violet-bright); }
+
+@media (max-width: 780px){
+  .modal-overlay{ padding: 0; }
+  .modal{ border: none; min-height: 100vh; }
+  .modal .product{ padding: 2.5rem 1.2rem 3rem; }
+}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button id="filterToggle" class="filter-toggle" aria-expanded="false" aria-controls="sidebar">
+    <span class="filter-toggle__bar"></span>
+    <span class="filter-toggle__bar"></span>
+    <span class="filter-toggle__bar"></span>
+  </button>
+  <a href="/" class="logo">docta<span class="logo__dot">.</span>vtg</a>
+  <span class="topbar__tag">archivo de ropa vintage</span>
+</header>
+
+<div class="layout">
+
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <div class="sidebar__inner">
+      <div class="sidebar__head">
+        <h2>filtrar</h2>
+        <button id="filterClose" class="sidebar__close" aria-label="cerrar filtros">×</button>
+      </div>
+
+      <fieldset class="filter-group">
+        <legend>talle</legend>
+        <label class="check"><input type="checkbox" name="talle" value="S"><span>S</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="M"><span>M</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="L"><span>L</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="XL"><span>XL</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="XXL+"><span>XXL+</span></label>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend>categoría</legend>
+        <label class="check"><input type="checkbox" name="categoria" value="Abrigos"><span>Abrigos</span></label>
+        <label class="check"><input type="checkbox" name="categoria" value="Pantalones"><span>Pantalones</span></label>
+        <label class="check"><input type="checkbox" name="categoria" value="Remeras"><span>Remeras</span></label>
+        <label class="check"><input type="checkbox" name="categoria" value="Accesorios"><span>Accesorios</span></label>
+      </fieldset>
+
+      <button id="clearFilters" class="clear-btn">limpiar filtros</button>
+
+      <p class="sidebar__count"><span id="resultCount">0</span> prendas</p>
+    </div>
+  </aside>
+
+  <div id="overlay" class="overlay"></div>
+
+  <main class="grid" id="grid" aria-live="polite">
+    <!-- las prendas se cargan por JS desde data/products.json -->
+  </main>
+
+</div>
+
+<div id="modalOverlay" class="modal-overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button id="modalClose" class="modal__close" aria-label="cerrar">×</button>
+    <div class="product" id="modalBody"><!-- se completa por JS al abrir una prenda --></div>
+  </div>
+</div>
+
+<template id="cardTemplate">
+  <a class="card" href="#" data-id="">
+    <div class="card__frame">
+      <img class="card__img" loading="lazy" alt="">
+      <span class="card__talle"></span>
+    </div>
+    <h3 class="card__title"></h3>
+    <p class="card__meta"></p>
+  </a>
+</template>
+
+<script>
+const grid = document.getElementById('grid');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const filterToggle = document.getElementById('filterToggle');
+const filterClose = document.getElementById('filterClose');
+const clearFiltersBtn = document.getElementById('clearFilters');
+const resultCount = document.getElementById('resultCount');
+const cardTemplate = document.getElementById('cardTemplate');
+
+const modalOverlay = document.getElementById('modalOverlay');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+let products = [];
+
+// --- carga de datos ---
+// Este JSON se genera con scripts/excel_a_json.py a partir del Excel.
+products = [
+  {
+    "id": "1.0",
+    "titulo": "Crewneck Nutmeg Vinatge",
+    "categoria": "Abrigos",
+    "subcategoria": "Buzo",
+    "talle": "XL",
+    "largo": null,
+    "ancho": null,
+    "estado": "10 / 10",
+    "detalles": "Sin detalles",
+    "disponible": true,
+    "precio": 40000.0,
+    "imagenes": [
+      "https://i.ibb.co/HLfPQmpG/IMG-9017.png",
+      "https://i.ibb.co/TMFM4VGy/IMG-9020.png",
+      "https://i.ibb.co/0LKxPV1/IMG-9021.png",
+      "https://i.ibb.co/qVJx4RP/IMG-9022.png"
+    ],
+    "imagen": "https://i.ibb.co/HLfPQmpG/IMG-9017.png",
+    "descripcion": "Buzo vintage crewneck de los Florida State Seminoles es una pieza clásica de finales de los 80 o principios de los 90. \n\nPresenta un llamativo escudo bordado con el icónico logo de la cara de un nativo americano y el nombre del equipo en letras doradas. \nConfeccionada en EE. UU. por la marca Nutmeg Mills, prenda ideal para los amantes de la moda deportiva retro"
+  },
+  {
+    "id": "2.0",
+    "titulo": "Windbreak Champion",
+    "categoria": "Abrigos",
+    "subcategoria": "Rompeviento",
+    "talle": "XL AMPLIO",
+    "largo": 77.0,
+    "ancho": 71.0,
+    "estado": "9,5 / 10",
+    "detalles": "Manchitas en manga izquierda poco notables (consultar por mensaje en caso de tener dudas).",
+    "disponible": true,
+    "precio": 45000.0,
+    "imagenes": [
+      "https://i.ibb.co/WNvxGvHY/IMG-9026.png",
+      "https://i.ibb.co/0VR01Q0g/IMG-9027.png",
+      "https://i.ibb.co/pjm7q5zm/IMG-9028.png",
+      "https://i.ibb.co/fz60M7k9/IMG-9029.png",
+      "https://i.ibb.co/jvLKRSbs/IMG-9030.png"
+    ],
+    "imagen": "https://i.ibb.co/WNvxGvHY/IMG-9026.png",
+    "descripcion": ""
+  },
+  {
+    "id": "3.0",
+    "titulo": "Polar Columbia",
+    "categoria": "Abrigos",
+    "subcategoria": "Buzo",
+    "talle": "XL",
+    "largo": null,
+    "ancho": null,
+    "estado": "10/10/2026",
+    "detalles": "Sin detalles",
+    "disponible": true,
+    "precio": 45000.0,
+    "imagenes": [
+      "https://i.ibb.co/Y4HCFmbs/IMG-8896.png",
+      "https://i.ibb.co/9kn4v6sL/IMG-8897.png",
+      "https://i.ibb.co/0RvJLrD5/IMG-8898.png",
+      "https://i.ibb.co/9kM6F4Ms/IMG-8906.png"
+    ],
+    "imagen": "https://i.ibb.co/Y4HCFmbs/IMG-8896.png",
+    "descripcion": ""
+  }
+];
+render();
+
+function getActiveFilters(name){
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+}
+
+function render(){
+  const talles = getActiveFilters('talle');
+  const categorias = getActiveFilters('categoria');
+
+  const filtered = products.filter(p => {
+    const okTalle = talles.length === 0 || talles.includes(p.talle);
+    const okCategoria = categorias.length === 0 || categorias.includes(p.categoria);
+    return okTalle && okCategoria;
+  });
+
+  resultCount.textContent = filtered.length;
+  grid.innerHTML = '';
+
+  if (filtered.length === 0){
+    grid.innerHTML = '<p class="grid__empty">no hay prendas con esos filtros.</p>';
+    return;
+  }
+
+  filtered.forEach(p => {
+    const node = cardTemplate.content.cloneNode(true);
+    const link = node.querySelector('.card');
+    link.href = `producto.html?id=${encodeURIComponent(p.id)}`; // por si alguien quiere abrirlo en pestaña nueva (ctrl+click, click derecho)
+    link.dataset.id = p.id;
+    const img = node.querySelector('.card__img');
+    img.src = p.imagen;
+    img.alt = p.titulo;
+    node.querySelector('.card__talle').textContent = p.talle;
+    node.querySelector('.card__title').textContent = p.titulo;
+    node.querySelector('.card__meta').textContent = p.subcategoria || p.categoria;
+    grid.appendChild(node);
+  });
+}
+
+// --- click en una prenda: abre el modal en vez de navegar ---
+grid.addEventListener('click', (e) => {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  e.preventDefault(); // click normal -> modal. ctrl/cmd+click o click del medio igual abre producto.html en pestaña nueva (comportamiento nativo del navegador)
+  const producto = products.find(p => String(p.id) === String(card.dataset.id));
+  if (producto) openModal(producto);
+});
+
+document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+  el.addEventListener('change', render);
+});
+
+clearFiltersBtn.addEventListener('click', () => {
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  render();
+});
+
+// --- sidebar desplegable ---
+function openSidebar(){
+  sidebar.classList.add('is-open');
+  sidebar.setAttribute('aria-hidden', 'false');
+  filterToggle.setAttribute('aria-expanded', 'true');
+  if (window.innerWidth <= 780){
+    overlay.classList.add('is-visible');
+  }
+}
+function closeSidebar(){
+  sidebar.classList.remove('is-open');
+  sidebar.setAttribute('aria-hidden', 'true');
+  filterToggle.setAttribute('aria-expanded', 'false');
+  overlay.classList.remove('is-visible');
+}
+
+filterToggle.addEventListener('click', () => {
+  sidebar.classList.contains('is-open') ? closeSidebar() : openSidebar();
+});
+filterClose.addEventListener('click', closeSidebar);
+overlay.addEventListener('click', closeSidebar);
+
+// abierto por defecto en escritorio
+if (window.innerWidth > 780){
+  openSidebar();
+}
+
+// --- modal de detalle de prenda ---
+function formatearPrecio(precio){
+  if (precio === null || precio === undefined || precio === '') return null;
+  const num = Number(precio);
+  if (Number.isNaN(num)) return null;
+  return num.toLocaleString('es-AR');
+}
+
+function openModal(p){
+  const imagenes = (p.imagenes && p.imagenes.length) ? p.imagenes : (p.imagen ? [p.imagen] : []);
+  const precio = formatearPrecio(p.precio);
+
+  const medidas = [];
+  if (p.largo) medidas.push(`largo ${p.largo}cm`);
+  if (p.ancho) medidas.push(`ancho ${p.ancho}cm`);
+
+  modalBody.innerHTML = `
+    <div class="product__gallery">
+      <div class="product__main-frame">
+        <img id="modalMainImage" class="product__main-img" src="${imagenes[0] || ''}" alt="${p.titulo}">
+      </div>
+      ${imagenes.length > 1 ? `
+        <div class="product__thumbs">
+          ${imagenes.map((img, i) => `
+            <button class="product__thumb ${i === 0 ? 'is-active' : ''}" data-src="${img}">
+              <img src="${img}" alt="${p.titulo} foto ${i + 1}">
+            </button>
+          `).join('')}
+        </div>
+      ` : ''}
+    </div>
+
+    <div class="product__info">
+      <p class="product__tag">${p.subcategoria || p.categoria}</p>
+      <h2 class="product__title" id="modalTitle">${p.titulo}</h2>
+      ${precio ? `<p class="product__price">$${precio}</p>` : ''}
+
+      <div class="product__specs">
+        ${p.talle ? `<div class="spec"><span>talle</span><span>${p.talle}</span></div>` : ''}
+        ${medidas.length ? `<div class="spec"><span>medidas</span><span>${medidas.join(' · ')}</span></div>` : ''}
+        ${p.categoria ? `<div class="spec"><span>categoría</span><span>${p.categoria}</span></div>` : ''}
+        ${p.estado ? `<div class="spec"><span>estado</span><span>${p.estado}</span></div>` : ''}
+        <div class="spec"><span>disponibilidad</span><span>${p.disponible ? 'disponible' : 'vendida'}</span></div>
+      </div>
+
+      ${p.descripcion ? `<p class="product__desc">${p.descripcion.replace(/\n/g, '<br>')}</p>` : ''}
+      ${p.detalles && p.detalles.toLowerCase() !== 'sin detalles' ? `<p class="product__details"><strong>detalles:</strong> ${p.detalles}</p>` : ''}
+    </div>
+  `;
+
+  const mainImage = document.getElementById('modalMainImage');
+  modalBody.querySelectorAll('.product__thumb').forEach(btn => {
+    btn.addEventListener('click', () => {
+      mainImage.src = btn.dataset.src;
+      modalBody.querySelectorAll('.product__thumb').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
+
+  modalOverlay.classList.add('is-visible');
+  modalOverlay.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+}
+
+function closeModal(){
+  modalOverlay.classList.remove('is-visible');
+  modalOverlay.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+modalClose.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalOverlay.classList.contains('is-visible')) closeModal();
+});
+
+</script>
+</body>
+</html>

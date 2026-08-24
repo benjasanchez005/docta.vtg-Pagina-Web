@@ -61,8 +61,15 @@
 
 </div>
 
+<div id="modalOverlay" class="modal-overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button id="modalClose" class="modal__close" aria-label="cerrar">×</button>
+    <div class="product" id="modalBody"><!-- se completa por JS al abrir una prenda --></div>
+  </div>
+</div>
+
 <template id="cardTemplate">
-  <a class="card" target="_blank" rel="noopener">
+  <a class="card" href="#" data-id="">
     <div class="card__frame">
       <img class="card__img" loading="lazy" alt="">
       <span class="card__talle"></span>
