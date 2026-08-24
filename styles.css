@@ -1,14 +1,14 @@
 :root{
-  --bg: #0a0a0d;
-  --bg-raised: #121016;
-  --violet-deep: #2a1533;
-  --violet: #5b2e73;
-  --violet-bright: #8b4fae;
-  --line: #29202f;
-  --text: #ede8ef;
-  --text-dim: #9c8fa8;
+  --bg: #050505;
+  --bg-raised: #0e0e10;
+  --violet-deep: #2b0d47;
+  --violet: #6b1fc9;
+  --violet-bright: #b026ff;
+  --line: #1c1c1f;
+  --text: #ffffff;
+  --text-dim: #a3a3a8;
 
-  --font-display: "Anton", sans-serif;
+  --font-display: "Big Shoulders Display", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 }
 
@@ -41,8 +41,9 @@ a{ color: inherit; text-decoration: none; }
 
 .logo{
   font-family: var(--font-display);
-  font-size: 1.6rem;
-  letter-spacing: 0.04em;
+  font-weight: 800;
+  font-size: 1.9rem;
+  letter-spacing: 0.01em;
   text-transform: lowercase;
 }
 .logo__dot{ color: var(--violet-bright); }
@@ -108,9 +109,10 @@ a{ color: inherit; text-decoration: none; }
 }
 .sidebar__head h2{
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-weight: 800;
+  font-size: 1.4rem;
   text-transform: lowercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.01em;
 }
 .sidebar__close{
   display:none;
@@ -227,11 +229,12 @@ a{ color: inherit; text-decoration: none; }
 
 .card__title{
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 1.15rem;
   text-transform: lowercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   padding: 0.8rem 0.9rem 0.2rem;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .card__meta{
@@ -330,9 +333,10 @@ a{ color: inherit; text-decoration: none; }
 
 .product__title{
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-weight: 800;
+  font-size: 2.6rem;
   text-transform: lowercase;
-  line-height: 1.1;
+  line-height: 1;
   margin-bottom: 0.9rem;
 }
 
