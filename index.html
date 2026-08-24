@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>docta.vtg — archivo de ropa vintage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <button id="filterToggle" class="filter-toggle" aria-expanded="false" aria-controls="sidebar">
+    <span class="filter-toggle__bar"></span>
+    <span class="filter-toggle__bar"></span>
+    <span class="filter-toggle__bar"></span>
+  </button>
+  <a href="/" class="logo">docta<span class="logo__dot">.</span>vtg</a>
+  <span class="topbar__tag">archivo de ropa vintage</span>
+</header>
+
+<div class="layout">
+
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <div class="sidebar__inner">
+      <div class="sidebar__head">
+        <h2>filtrar</h2>
+        <button id="filterClose" class="sidebar__close" aria-label="cerrar filtros">×</button>
+      </div>
+
+      <fieldset class="filter-group">
+        <legend>talle</legend>
+        <label class="check"><input type="checkbox" name="talle" value="S"><span>S</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="M"><span>M</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="L"><span>L</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="XL"><span>XL</span></label>
+        <label class="check"><input type="checkbox" name="talle" value="XXL+"><span>XXL+</span></label>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend>categoría</legend>
+        <label class="check"><input type="checkbox" name="categoria" value="Abrigos"><span>Abrigos</span></label>
+        <label class="check"><input type="checkbox" name="categoria" value="Pantalones"><span>Pantalones</span></label>
+        <label class="check"><input type="checkbox" name="categoria" value="Remeras"><span>Remeras</span></label>
+        <label class="check"><input type="checkbox" name="categoria" value="Accesorios"><span>Accesorios</span></label>
+      </fieldset>
+
+      <button id="clearFilters" class="clear-btn">limpiar filtros</button>
+
+      <p class="sidebar__count"><span id="resultCount">0</span> prendas</p>
+    </div>
+  </aside>
+
+  <div id="overlay" class="overlay"></div>
+
+  <main class="grid" id="grid" aria-live="polite">
+    <!-- las prendas se cargan por JS desde data/products.json -->
+  </main>
+
+</div>
+
+<template id="cardTemplate">
+  <a class="card" target="_blank" rel="noopener">
+    <div class="card__frame">
+      <img class="card__img" loading="lazy" alt="">
+      <span class="card__talle"></span>
+    </div>
+    <h3 class="card__title"></h3>
+    <p class="card__meta"></p>
+  </a>
+</template>
+
+<script src="script.js"></script>
+</body>
+</html>

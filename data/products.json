@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1.0",
+    "titulo": "Crewneck Nutmeg Vinatge",
+    "categoria": "Abrigos",
+    "subcategoria": "Buzo",
+    "talle": "XL",
+    "largo": null,
+    "ancho": null,
+    "estado": "10 / 10",
+    "detalles": "Sin detalles",
+    "disponible": true,
+    "precio": 40000.0,
+    "imagenes": [
+      "https://i.ibb.co/HLfPQmpG/IMG-9017.png",
+      "https://i.ibb.co/TMFM4VGy/IMG-9020.png",
+      "https://i.ibb.co/0LKxPV1/IMG-9021.png",
+      "https://i.ibb.co/qVJx4RP/IMG-9022.png"
+    ],
+    "imagen": "https://i.ibb.co/HLfPQmpG/IMG-9017.png",
+    "descripcion": "Buzo vintage crewneck de los Florida State Seminoles es una pieza clásica de finales de los 80 o principios de los 90. \n\nPresenta un llamativo escudo bordado con el icónico logo de la cara de un nativo americano y el nombre del equipo en letras doradas. \nConfeccionada en EE. UU. por la marca Nutmeg Mills, prenda ideal para los amantes de la moda deportiva retro"
+  },
+  {
+    "id": "2.0",
+    "titulo": "Windbreak Champion",
+    "categoria": "Abrigos",
+    "subcategoria": "Rompeviento",
+    "talle": "XL AMPLIO",
+    "largo": 77.0,
+    "ancho": 71.0,
+    "estado": "9,5 / 10",
+    "detalles": "Manchitas en manga izquierda poco notables (consultar por mensaje en caso de tener dudas).",
+    "disponible": true,
+    "precio": 45000.0,
+    "imagenes": [
+      "https://i.ibb.co/WNvxGvHY/IMG-9026.png",
+      "https://i.ibb.co/0VR01Q0g/IMG-9027.png",
+      "https://i.ibb.co/pjm7q5zm/IMG-9028.png",
+      "https://i.ibb.co/fz60M7k9/IMG-9029.png",
+      "https://i.ibb.co/jvLKRSbs/IMG-9030.png"
+    ],
+    "imagen": "https://i.ibb.co/WNvxGvHY/IMG-9026.png",
+    "descripcion": ""
+  },
+  {
+    "id": "3.0",
+    "titulo": "Polar Columbia",
+    "categoria": "Abrigos",
+    "subcategoria": "Buzo",
+    "talle": "XL",
+    "largo": null,
+    "ancho": null,
+    "estado": "10/10/2026",
+    "detalles": "Sin detalles",
+    "disponible": true,
+    "precio": 45000.0,
+    "imagenes": [
+      "https://i.ibb.co/Y4HCFmbs/IMG-8896.png",
+      "https://i.ibb.co/9kn4v6sL/IMG-8897.png",
+      "https://i.ibb.co/0RvJLrD5/IMG-8898.png",
+      "https://i.ibb.co/9kM6F4Ms/IMG-8906.png"
+    ],
+    "imagen": "https://i.ibb.co/Y4HCFmbs/IMG-8896.png",
+    "descripcion": ""
+  }
+]
